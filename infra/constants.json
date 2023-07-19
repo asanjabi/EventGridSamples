@@ -1,0 +1,16 @@
+{
+  "maxStorageAccountNameLength": 23,
+  "logAnalyticsMaxNameLength": 63,
+  "appInsightsMaxNameLength": 255,
+  "functionsMaxNameLength": 60,
+  "webAppMaxNameLength": 60,
+  "appServicePlanMaxNameLength": 40,
+  "signalRServiceMaxNameLength": 63,
+  "keyVaultMaxNameLength": 24,
+  "servicebusNamespaceMaxLength": 50,
+  "sqlServerMaxNameLength": 63,
+  "sqlDatabaseMaxNameLength": 63,
+  "managedIdentityNameMaxLength": 128,
+  "eventgridNamespaceMaxLength": 50,
+  "end": ""
+}
