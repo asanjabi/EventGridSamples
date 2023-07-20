@@ -52,7 +52,7 @@ module inventoryMonitor './InventoryMonitor.bicep' = {
     applicationInsightsKey: sharedInfra.outputs.applicationInsightsKey
     appservicePlanId: sharedInfra.outputs.appServicePlanId
     logAnalyticsId: sharedInfra.outputs.logAnalyticsWorkspaceId
-    
+    vnetName: sharedInfra.outputs.vnetName
     }
 }
 

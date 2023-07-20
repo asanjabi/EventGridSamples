@@ -12,5 +12,6 @@
   "sqlDatabaseMaxNameLength": 63,
   "managedIdentityNameMaxLength": 128,
   "eventgridNamespaceMaxLength": 50,
+  "networkVirtualNetworksMaxLength": 63,
   "end": ""
 }
