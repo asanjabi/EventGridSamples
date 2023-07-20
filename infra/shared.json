@@ -1,0 +1,708 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.19.5.34762",
+      "templateHash": "8606011026030914571"
+    }
+  },
+  "parameters": {
+    "parentResourceToken": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]"
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {}
+    },
+    "logAnalyticsName": {
+      "type": "string",
+      "defaultValue": ""
+    },
+    "applicationInsightsName": {
+      "type": "string",
+      "defaultValue": ""
+    },
+    "eventGridNamespaceName": {
+      "type": "string",
+      "defaultValue": ""
+    },
+    "appservicePlanName": {
+      "type": "string",
+      "defaultValue": ""
+    }
+  },
+  "variables": {
+    "$fxv#0": {
+      "analysisServicesServers": "as",
+      "apiManagementService": "apim-",
+      "appConfigurationConfigurationStores": "appcs-",
+      "appManagedEnvironments": "cae-",
+      "appContainerApps": "ca-",
+      "authorizationPolicyDefinitions": "policy-",
+      "automationAutomationAccounts": "aa-",
+      "blueprintBlueprints": "bp-",
+      "blueprintBlueprintsArtifacts": "bpa-",
+      "cacheRedis": "redis-",
+      "cdnProfiles": "cdnp-",
+      "cdnProfilesEndpoints": "cdne-",
+      "cognitiveServicesAccounts": "cog-",
+      "cognitiveServicesFormRecognizer": "cog-fr-",
+      "cognitiveServicesTextAnalytics": "cog-ta-",
+      "computeAvailabilitySets": "avail-",
+      "computeCloudServices": "cld-",
+      "computeDiskEncryptionSets": "des",
+      "computeDisks": "disk",
+      "computeDisksOs": "osdisk",
+      "computeGalleries": "gal",
+      "computeSnapshots": "snap-",
+      "computeVirtualMachines": "vm",
+      "computeVirtualMachineScaleSets": "vmss-",
+      "containerInstanceContainerGroups": "ci",
+      "containerRegistryRegistries": "cr",
+      "containerServiceManagedClusters": "aks-",
+      "databricksWorkspaces": "dbw-",
+      "dataFactoryFactories": "adf-",
+      "dataLakeAnalyticsAccounts": "dla",
+      "dataLakeStoreAccounts": "dls",
+      "dataMigrationServices": "dms-",
+      "dBforMySQLServers": "mysql-",
+      "dBforPostgreSQLServers": "psql-",
+      "devicesIotHubs": "iot-",
+      "devicesProvisioningServices": "provs-",
+      "devicesProvisioningServicesCertificates": "pcert-",
+      "documentDBDatabaseAccounts": "cosmos-",
+      "eventGridDomains": "evgd-",
+      "eventGridDomainsTopics": "evgt-",
+      "eventGridNamespaces": "evgns-",
+      "eventGridEventSubscriptions": "evgs-",
+      "eventHubNamespaces": "evhns-",
+      "eventHubNamespacesEventHubs": "evh-",
+      "hdInsightClustersHadoop": "hadoop-",
+      "hdInsightClustersHbase": "hbase-",
+      "hdInsightClustersKafka": "kafka-",
+      "hdInsightClustersMl": "mls-",
+      "hdInsightClustersSpark": "spark-",
+      "hdInsightClustersStorm": "storm-",
+      "hybridComputeMachines": "arcs-",
+      "insightsActionGroups": "ag-",
+      "insightsComponents": "appi-",
+      "keyVaultVaults": "kv-",
+      "kubernetesConnectedClusters": "arck",
+      "kustoClusters": "dec",
+      "kustoClustersDatabases": "dedb",
+      "logicIntegrationAccounts": "ia-",
+      "logicWorkflows": "logic-",
+      "machineLearningServicesWorkspaces": "mlw-",
+      "managedIdentityUserAssignedIdentities": "id-",
+      "managementManagementGroups": "mg-",
+      "migrateAssessmentProjects": "migr-",
+      "networkApplicationGateways": "agw-",
+      "networkApplicationSecurityGroups": "asg-",
+      "networkAzureFirewalls": "afw-",
+      "networkBastionHosts": "bas-",
+      "networkConnections": "con-",
+      "networkDnsZones": "dnsz-",
+      "networkExpressRouteCircuits": "erc-",
+      "networkFirewallPolicies": "afwp-",
+      "networkFirewallPoliciesWebApplication": "waf",
+      "networkFirewallPoliciesRuleGroups": "wafrg",
+      "networkFrontDoors": "fd-",
+      "networkFrontdoorWebApplicationFirewallPolicies": "fdfp-",
+      "networkLoadBalancersExternal": "lbe-",
+      "networkLoadBalancersInternal": "lbi-",
+      "networkLoadBalancersInboundNatRules": "rule-",
+      "networkLocalNetworkGateways": "lgw-",
+      "networkNatGateways": "ng-",
+      "networkNetworkInterfaces": "nic-",
+      "networkNetworkSecurityGroups": "nsg-",
+      "networkNetworkSecurityGroupsSecurityRules": "nsgsr-",
+      "networkNetworkWatchers": "nw-",
+      "networkPrivateDnsZones": "pdnsz-",
+      "networkPrivateLinkServices": "pl-",
+      "networkPublicIPAddresses": "pip-",
+      "networkPublicIPPrefixes": "ippre-",
+      "networkRouteFilters": "rf-",
+      "networkRouteTables": "rt-",
+      "networkRouteTablesRoutes": "udr-",
+      "networkTrafficManagerProfiles": "traf-",
+      "networkVirtualNetworkGateways": "vgw-",
+      "networkVirtualNetworks": "vnet-",
+      "networkVirtualNetworksSubnets": "snet-",
+      "networkVirtualNetworksVirtualNetworkPeerings": "peer-",
+      "networkVirtualWans": "vwan-",
+      "networkVpnGateways": "vpng-",
+      "networkVpnGatewaysVpnConnections": "vcn-",
+      "networkVpnGatewaysVpnSites": "vst-",
+      "notificationHubsNamespaces": "ntfns-",
+      "notificationHubsNamespacesNotificationHubs": "ntf-",
+      "operationalInsightsWorkspaces": "log-",
+      "portalDashboards": "dash-",
+      "powerBIDedicatedCapacities": "pbi-",
+      "purviewAccounts": "pview-",
+      "recoveryServicesVaults": "rsv-",
+      "resourcesResourceGroups": "rg-",
+      "searchSearchServices": "srch-",
+      "serviceBusNamespaces": "sb-",
+      "serviceBusNamespacesQueues": "sbq-",
+      "serviceBusNamespacesTopics": "sbt-",
+      "serviceEndPointPolicies": "se-",
+      "serviceFabricClusters": "sf-",
+      "signalRServiceSignalR": "sigr",
+      "sqlManagedInstances": "sqlmi-",
+      "sqlServers": "sql-",
+      "sqlServersDataWarehouse": "sqldw-",
+      "sqlServersDatabases": "sqldb-",
+      "sqlServersDatabasesStretch": "sqlstrdb-",
+      "storageStorageAccounts": "st",
+      "storageStorageAccountsVm": "stvm",
+      "storSimpleManagers": "ssimp",
+      "streamAnalyticsCluster": "asa-",
+      "synapseWorkspaces": "syn",
+      "synapseWorkspacesAnalyticsWorkspaces": "synw",
+      "synapseWorkspacesSqlPoolsDedicated": "syndp",
+      "synapseWorkspacesSqlPoolsSpark": "synsp",
+      "timeSeriesInsightsEnvironments": "tsi-",
+      "webServerFarms": "plan-",
+      "webSitesAppService": "app-",
+      "webSitesAppServiceEnvironment": "ase-",
+      "webSitesFunctions": "func-",
+      "webStaticSites": "stapp-"
+    },
+    "$fxv#1": {
+      "maxStorageAccountNameLength": 23,
+      "logAnalyticsMaxNameLength": 63,
+      "appInsightsMaxNameLength": 255,
+      "functionsMaxNameLength": 60,
+      "webAppMaxNameLength": 60,
+      "appServicePlanMaxNameLength": 40,
+      "signalRServiceMaxNameLength": 63,
+      "keyVaultMaxNameLength": 24,
+      "servicebusNamespaceMaxLength": 50,
+      "sqlServerMaxNameLength": 63,
+      "sqlDatabaseMaxNameLength": 63,
+      "managedIdentityNameMaxLength": 128,
+      "eventgridNamespaceMaxLength": 50,
+      "end": ""
+    },
+    "resourceToken": "[toLower(uniqueString(subscription().id, parameters('parentResourceToken'), parameters('location'), 'shared-resources'))]",
+    "abbrs": "[variables('$fxv#0')]",
+    "c": "[variables('$fxv#1')]",
+    "_logAnalyticsName": "[if(not(empty(parameters('logAnalyticsName'))), parameters('logAnalyticsName'), take(format('{0}{1}', variables('abbrs').operationalInsightsWorkspaces, variables('resourceToken')), variables('c').logAnalyticsMaxNameLength))]",
+    "_applicationInsightsName": "[if(not(empty(parameters('applicationInsightsName'))), parameters('applicationInsightsName'), take(format('{0}{1}', variables('abbrs').insightsComponents, variables('resourceToken')), variables('c').appInsightsMaxNameLength))]",
+    "_eventGridNamespaceName": "[if(not(empty(parameters('eventGridNamespaceName'))), parameters('eventGridNamespaceName'), take(format('{0}{1}', variables('abbrs').eventGridNamespaces, variables('resourceToken')), variables('c').eventgridNamespaceMaxLength))]",
+    "_appServicePlanName": "[if(not(empty(parameters('appservicePlanName'))), parameters('appservicePlanName'), take(format('{0}{1}', variables('abbrs').webServerFarms, variables('resourceToken')), variables('c').appServicePlanMaxNameLength))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "eventgridNamespace",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "eventGridNamespaceName": {
+            "value": "[variables('_eventGridNamespaceName')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.19.5.34762",
+              "templateHash": "14297570696284259349"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]"
+            },
+            "tags": {
+              "type": "object",
+              "defaultValue": {}
+            },
+            "eventGridNamespaceName": {
+              "type": "string"
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.EventGrid/namespaces",
+              "apiVersion": "2023-06-01-preview",
+              "name": "[parameters('eventGridNamespaceName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "sku": {
+                "name": "Standard",
+                "capacity": 1
+              },
+              "properties": {
+                "publicNetworkAccess": "Enabled"
+              },
+              "identity": {
+                "type": "SystemAssigned"
+              }
+            }
+          ],
+          "outputs": {
+            "name": {
+              "type": "string",
+              "value": "[parameters('eventGridNamespaceName')]"
+            },
+            "id": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.EventGrid/namespaces', parameters('eventGridNamespaceName'))]"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "topic1",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "topicName": {
+            "value": "topic1"
+          },
+          "eventGridNamespaceName": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'eventgridNamespace'), '2022-09-01').outputs.name.value]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.19.5.34762",
+              "templateHash": "4348713168941684814"
+            }
+          },
+          "parameters": {
+            "tags": {
+              "type": "object",
+              "defaultValue": {}
+            },
+            "eventGridNamespaceName": {
+              "type": "string"
+            },
+            "topicName": {
+              "type": "string"
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.EventGrid/namespaces/topics",
+              "apiVersion": "2023-06-01-preview",
+              "name": "[format('{0}/{1}', parameters('eventGridNamespaceName'), parameters('topicName'))]",
+              "properties": {}
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'eventgridNamespace')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "appServicePlan",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "appservicePlanName": {
+            "value": "[variables('_appServicePlanName')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          },
+          "sku": {
+            "value": {
+              "name": "P1V3",
+              "tier": "PremiumV3"
+            }
+          },
+          "logAnalyticsId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'monitoring'), '2022-09-01').outputs.logAnalyticsWorkspaceId.value]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.19.5.34762",
+              "templateHash": "17484605214180485047"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]"
+            },
+            "appservicePlanName": {
+              "type": "string"
+            },
+            "sku": {
+              "type": "object",
+              "defaultValue": {
+                "name": "P1V3",
+                "tier": "PremiumV3"
+              }
+            },
+            "logAnalyticsId": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object",
+              "defaultValue": {}
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Web/serverfarms",
+              "apiVersion": "2022-03-01",
+              "name": "[parameters('appservicePlanName')]",
+              "location": "[parameters('location')]",
+              "kind": "linux",
+              "tags": "[parameters('tags')]",
+              "sku": "[parameters('sku')]",
+              "properties": {
+                "reserved": true
+              }
+            },
+            {
+              "condition": "[not(empty(parameters('logAnalyticsId')))]",
+              "type": "Microsoft.Insights/diagnosticSettings",
+              "apiVersion": "2021-05-01-preview",
+              "scope": "[format('Microsoft.Web/serverfarms/{0}', parameters('appservicePlanName'))]",
+              "name": "Send_To_LogAnalytics",
+              "properties": {
+                "workspaceId": "[parameters('logAnalyticsId')]",
+                "metrics": [
+                  {
+                    "enabled": true,
+                    "category": "AllMetrics"
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('appservicePlanName'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "name": {
+              "type": "string",
+              "value": "[parameters('appservicePlanName')]"
+            },
+            "id": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Web/serverfarms', parameters('appservicePlanName'))]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'monitoring')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "monitoring",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "logAnalyticsName": {
+            "value": "[variables('_logAnalyticsName')]"
+          },
+          "applicationInsightsName": {
+            "value": "[variables('_applicationInsightsName')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.19.5.34762",
+              "templateHash": "7667590709908927355"
+            }
+          },
+          "parameters": {
+            "logAnalyticsName": {
+              "type": "string"
+            },
+            "applicationInsightsName": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]"
+            },
+            "tags": {
+              "type": "object",
+              "defaultValue": {}
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2022-09-01",
+              "name": "loganalytics",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "name": {
+                    "value": "[parameters('logAnalyticsName')]"
+                  },
+                  "location": {
+                    "value": "[parameters('location')]"
+                  },
+                  "tags": {
+                    "value": "[parameters('tags')]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.19.5.34762",
+                      "templateHash": "8949787014645844642"
+                    }
+                  },
+                  "parameters": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "location": {
+                      "type": "string",
+                      "defaultValue": "[resourceGroup().location]"
+                    },
+                    "tags": {
+                      "type": "object",
+                      "defaultValue": {}
+                    }
+                  },
+                  "resources": [
+                    {
+                      "type": "Microsoft.OperationalInsights/workspaces",
+                      "apiVersion": "2021-12-01-preview",
+                      "name": "[parameters('name')]",
+                      "location": "[parameters('location')]",
+                      "tags": "[parameters('tags')]",
+                      "properties": {
+                        "retentionInDays": 30,
+                        "features": {
+                          "searchVersion": 1
+                        },
+                        "sku": {
+                          "name": "PerGB2018"
+                        }
+                      }
+                    }
+                  ],
+                  "outputs": {
+                    "id": {
+                      "type": "string",
+                      "value": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('name'))]"
+                    },
+                    "name": {
+                      "type": "string",
+                      "value": "[parameters('name')]"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2022-09-01",
+              "name": "applicationinsights",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "name": {
+                    "value": "[parameters('applicationInsightsName')]"
+                  },
+                  "location": {
+                    "value": "[parameters('location')]"
+                  },
+                  "tags": {
+                    "value": "[parameters('tags')]"
+                  },
+                  "logAnalyticsWorkspaceId": {
+                    "value": "[reference(resourceId('Microsoft.Resources/deployments', 'loganalytics'), '2022-09-01').outputs.id.value]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.19.5.34762",
+                      "templateHash": "17280363748270518550"
+                    }
+                  },
+                  "parameters": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "location": {
+                      "type": "string",
+                      "defaultValue": "[resourceGroup().location]"
+                    },
+                    "tags": {
+                      "type": "object",
+                      "defaultValue": {}
+                    },
+                    "logAnalyticsWorkspaceId": {
+                      "type": "string"
+                    }
+                  },
+                  "resources": [
+                    {
+                      "type": "Microsoft.Insights/components",
+                      "apiVersion": "2020-02-02",
+                      "name": "[parameters('name')]",
+                      "location": "[parameters('location')]",
+                      "tags": "[parameters('tags')]",
+                      "kind": "web",
+                      "properties": {
+                        "Application_Type": "web",
+                        "WorkspaceResourceId": "[parameters('logAnalyticsWorkspaceId')]"
+                      }
+                    }
+                  ],
+                  "outputs": {
+                    "connectionString": {
+                      "type": "string",
+                      "value": "[reference(resourceId('Microsoft.Insights/components', parameters('name')), '2020-02-02').ConnectionString]"
+                    },
+                    "instrumentationKey": {
+                      "type": "string",
+                      "value": "[reference(resourceId('Microsoft.Insights/components', parameters('name')), '2020-02-02').InstrumentationKey]"
+                    },
+                    "name": {
+                      "type": "string",
+                      "value": "[parameters('name')]"
+                    }
+                  }
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', 'loganalytics')]"
+              ]
+            }
+          ],
+          "outputs": {
+            "applicationInsightsConnectionString": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.Resources/deployments', 'applicationinsights'), '2022-09-01').outputs.connectionString.value]"
+            },
+            "applicationInsightsInstrumentationKey": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.Resources/deployments', 'applicationinsights'), '2022-09-01').outputs.instrumentationKey.value]"
+            },
+            "applicationInsightsName": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.Resources/deployments', 'applicationinsights'), '2022-09-01').outputs.name.value]"
+            },
+            "logAnalyticsWorkspaceId": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.Resources/deployments', 'loganalytics'), '2022-09-01').outputs.id.value]"
+            },
+            "logAnalyticsWorkspaceName": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.Resources/deployments', 'loganalytics'), '2022-09-01').outputs.name.value]"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "applicationInsightsConnectionString": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'monitoring'), '2022-09-01').outputs.applicationInsightsConnectionString.value]"
+    },
+    "applicationInsightsKey": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'monitoring'), '2022-09-01').outputs.applicationInsightsInstrumentationKey.value]"
+    },
+    "applicationInsightsName": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'monitoring'), '2022-09-01').outputs.applicationInsightsName.value]"
+    },
+    "logAnalyticsWorkspaceId": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'monitoring'), '2022-09-01').outputs.logAnalyticsWorkspaceId.value]"
+    },
+    "logAnalyticsWorkspaceName": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'monitoring'), '2022-09-01').outputs.logAnalyticsWorkspaceName.value]"
+    },
+    "appServicePlanId": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'appServicePlan'), '2022-09-01').outputs.id.value]"
+    },
+    "appServicePlanName": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'appServicePlan'), '2022-09-01').outputs.name.value]"
+    }
+  }
+}

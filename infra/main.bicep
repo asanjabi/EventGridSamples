@@ -18,6 +18,7 @@ param resourceGroupName string = ''
 param applicationInsightsName string = ''
 param logAnalyticsName string = ''
 param appservicePlanName string = ''
+param storeTransactionTopicName string = 'storeTransactions'
 
 var abbrs = loadJsonContent('./abbreviations.json')
 
@@ -29,10 +30,6 @@ var tags = {
 // Generate a unique token to be used in naming resources.
 var resourceToken = toLower(uniqueString(subscription().id, rg.id, environmentName, location))
 
-
-// Example usage:
-//   tags: union(tags, { 'azd-service-name': apiServiceName })
-var app1ServiceName = 'app1'
 
 // Organize resources in a resource group
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
@@ -66,6 +63,7 @@ module sharedInfra './shared.bicep'={
     applicationInsightsName: applicationInsightsName
     logAnalyticsName: logAnalyticsName
     appservicePlanName: appservicePlanName
+    storeTransactionTopicName: storeTransactionTopicName
   }
 }
 

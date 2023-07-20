@@ -7,8 +7,6 @@ param sku object = {
 param logAnalyticsId string
 param tags object = {}
 
-
-
 resource appservicePlan 'Microsoft.Web/serverfarms@2022-03-01' ={
   location: location
   name: appservicePlanName

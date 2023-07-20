@@ -2,10 +2,13 @@ param parentResourceToken string
 param location string = resourceGroup().location
 param tags object = {}
 
+param storeTransactionTopicName string
+
 param logAnalyticsName string = ''
 param applicationInsightsName string = ''
 param eventGridNamespaceName string = ''
 param appservicePlanName string = ''
+
 
 
 var resourceToken = toLower(uniqueString(subscription().id, parentResourceToken, location, 'shared-resources'))
@@ -23,6 +26,15 @@ module eventgridNamespace 'core/eventgrid/eventgrid_namespace.bicep' = {
   params: {
     eventGridNamespaceName: _eventGridNamespaceName
     location: location
+    tags: tags
+  }
+}
+
+module storeTransactionTopic 'core/eventgrid/eventgrid_topic.bicep' = {
+  name: storeTransactionTopicName
+  params: {
+    topicName: storeTransactionTopicName
+    eventGridNamespaceName: eventgridNamespace.outputs.name
     tags: tags
   }
 }

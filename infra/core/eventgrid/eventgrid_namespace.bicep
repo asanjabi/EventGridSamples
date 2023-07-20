@@ -19,3 +19,6 @@ resource ns 'Microsoft.EventGrid/namespaces@2023-06-01-preview'={
     type: 'SystemAssigned'
   }
 }
+
+output name string = ns.name
+output id string = ns.id

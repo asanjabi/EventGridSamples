@@ -1,6 +1,23 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
 
 name: ContosoSuperMart
+
+hooks:
+#Make sure Event Grid resource provider is registered before deployment
+  preprovision:
+  #since the commands are identical, it can't infer the shell type
+  #so we need to specify it
+    posix:
+      shell: sh
+      run: az provider register --namespace Microsoft.EventGrid --wait
+      interactive: true
+      stderr: true
+    windows:
+      shell: pwsh
+      run: az provider register --namespace Microsoft.EventGrid --wait
+      interactive: true
+      stderr: true
+
 services:
   inventory-monitor:
     project: ./src/InventoryMonitor
