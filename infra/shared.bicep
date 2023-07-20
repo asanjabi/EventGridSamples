@@ -8,7 +8,8 @@ param logAnalyticsName string = ''
 param applicationInsightsName string = ''
 param eventGridNamespaceName string = ''
 param appservicePlanName string = ''
-
+param vnetName string = ''
+param vNETaddPrefixes array = ['10.0.0.0/16']
 
 
 var resourceToken = toLower(uniqueString(subscription().id, parentResourceToken, location, 'shared-resources'))
@@ -20,6 +21,38 @@ var _logAnalyticsName = !empty(logAnalyticsName) ? logAnalyticsName : take('${ab
 var _applicationInsightsName = !empty(applicationInsightsName) ? applicationInsightsName : take('${abbrs.insightsComponents}${resourceToken}', c.appInsightsMaxNameLength)
 var _eventGridNamespaceName = !empty(eventGridNamespaceName) ? eventGridNamespaceName : take('${abbrs.eventGridNamespaces}${resourceToken}', c.eventgridNamespaceMaxLength)
 var _appServicePlanName = !empty(appservicePlanName) ? appservicePlanName : take('${abbrs.webServerFarms}${resourceToken}', c.appServicePlanMaxNameLength)
+var _vnetName = !empty(vnetName) ? vnetName : take('${abbrs.networkVirtualNetworks}${resourceToken}', c.networkVirtualNetworksMaxLength)
+
+module vnet 'core/network/vnet.bicep' = {
+  name: _vnetName
+  params: {
+    location: location
+    vnetAddressSpace: {
+      addressPrefixes: vNETaddPrefixes
+    }
+    vnetName: _vnetName
+    diagnosticWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId
+  }
+}
+
+// Creating Private DNS Zone for Azure App Service
+module privatednsAppZone 'core/network/privatednszone.bicep' = {
+  name: 'privatednsAppZone'
+  params: {
+    privateDNSZoneName: 'privatelink.azurewebsites.net'
+  }
+}
+
+// Linking Private DNS Zone for Azure App Service to VNet
+module privateDNSLinkApp 'core/network/privatednslink.bicep' = {
+  name: 'privateDNSLinkACR'
+  params: {
+    privateDnsZoneName: privatednsAppZone.outputs.privateDNSZoneName
+    vnetId: vnet.outputs.vnetId
+  }
+}
+
+
 
 module eventgridNamespace 'core/eventgrid/eventgrid_namespace.bicep' = {
   name: 'eventgridNamespace'
@@ -71,5 +104,6 @@ output logAnalyticsWorkspaceName string = monitoring.outputs.logAnalyticsWorkspa
 
 output appServicePlanId string = appservicePlan.outputs.id
 output appServicePlanName string = appservicePlan.outputs.name
+output vnetName string = vnet.name
 
 

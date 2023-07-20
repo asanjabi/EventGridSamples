@@ -6,6 +6,10 @@ param applicationInsightsConnectionString string
 param logAnalyticsId string
 param additionalSettings array = []
 param tags object = {}
+param VNetIntegrationSubnetName string
+param vnetName string 
+param subnetName string
+param appPrivateEndpointName string
 
 
 
@@ -30,6 +34,16 @@ var settings=[
 
 var finalAppSettings = union (settings, additionalSettings)
 
+// Defining Private Endpoint Subnet
+resource servicesSubnet 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' existing = {
+  name: '${vnetName}/${subnetName}'
+}
+
+// Defining Integration Subnet
+resource VNetIntegrationSubnet 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' existing = {
+  name: '${vnetName}/${VNetIntegrationSubnetName}'
+}
+
 resource webApp 'Microsoft.Web/sites@2022-09-01' = {
   name: webAppName
   location: location
@@ -40,7 +54,7 @@ resource webApp 'Microsoft.Web/sites@2022-09-01' = {
   properties: {
     serverFarmId: appservicePlanId
     httpsOnly: true
-
+    virtualNetworkSubnetId: VNetIntegrationSubnet.id
     siteConfig:{
       alwaysOn: true
       appSettings:finalAppSettings
@@ -56,6 +70,8 @@ resource webApp 'Microsoft.Web/sites@2022-09-01' = {
 output id string = webApp.id
 output url string = 'https://${webApp.properties.defaultHostName}'
 output name string = webApp.name
+
+
 
 
 resource logs 'Microsoft.Web/sites/config@2022-03-01' = {
@@ -125,4 +141,22 @@ resource webAppDiagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05
       }
     ]
   }
+}
+
+module privateEndpointApp '../network/privateendpoint.bicep' = {
+  name: appPrivateEndpointName
+  params: {
+    location: location
+    groupIds: [
+      'sites'
+    ]
+    privateEndpointName: appPrivateEndpointName
+    privatelinkConnName: '${appPrivateEndpointName}-conn'
+    resourceId: webApp.id
+    subnetid: servicesSubnet.id
+  }
+  dependsOn:[
+    webAppDiagnosticSettings
+    logs 
+  ]
 }

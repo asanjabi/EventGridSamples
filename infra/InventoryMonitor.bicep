@@ -6,6 +6,7 @@ param applicationInsightsKey string
 param applicationInsightsConnectionString string
 param logAnalyticsId string
 param inventoryWebAppName string = ''
+param vnetName string 
 
 var abbrs = loadJsonContent('./abbreviations.json')
 var c = loadJsonContent('./constants.json')
@@ -16,6 +17,9 @@ var _inventoryWebAppName = !empty(inventoryWebAppName) ? inventoryWebAppName : t
 
 var inventoryTags = union(tags, { 'azd-service-name': 'inventory-monitor' })
 
+
+var _vnetName = !empty(vnetName) ? vnetName : take('${abbrs.networkVirtualNetworks}${resourceToken}', c.networkVirtualNetworksMaxLength)
+var appPrivateEndpointName  = '${_inventoryWebAppName}-pe'
 module webApp './core/hosting/webApp.bicep' = {
   name: 'apiWebApp'
   params: {
@@ -26,5 +30,9 @@ module webApp './core/hosting/webApp.bicep' = {
     applicationInsightsConnectionString: applicationInsightsConnectionString
     applicationInsightsKey: applicationInsightsKey
     logAnalyticsId: logAnalyticsId
+    vnetName: _vnetName
+    VNetIntegrationSubnetName: 'VnetIntegrationSubnet'
+    subnetName: 'servicendpoints'
+    appPrivateEndpointName: appPrivateEndpointName
   }
 }
